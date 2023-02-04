@@ -14,6 +14,9 @@ import javax.validation.constraints.NotNull;
 public class UserOrderForm {
 
     @NotBlank
+    private String date;
+
+    @NotBlank
     private String customerName;
 
     @NotBlank
@@ -54,6 +57,14 @@ public class UserOrderForm {
 
     @NotNull
     private boolean washingMachineInstallation;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getCustomerName() {
         return customerName;

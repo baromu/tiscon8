@@ -20,6 +20,18 @@ public class Customer implements Serializable {
 
     private String newAddress;
 
+    private String date;
+
+    public int getDate() {
+        return customerId;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    
+
     public int getCustomerId() {
         return customerId;
     }
