@@ -132,6 +132,18 @@ public class EstimateController {
         // 料金の計算を行う。
         UserOrderDto dto = new UserOrderDto();
         BeanUtils.copyProperties(userOrderForm, dto);
+
+        int boxsum = getBoxForPackage(dto.getBox(), PackageType.BOX)
+                + getBoxForPackage(dto.getBed(), PackageType.BED)
+                + getBoxForPackage(dto.getBicycle(), PackageType.BICYCLE)
+                + getBoxForPackage(dto.getWashingMachine(), PackageType.WASHING_MACHINE);
+
+        if(boxsum > 200){
+            model.addAttribute("prefectures", estimateDAO.getAllPrefectures());
+            model.addAttribute("userOrderForm", userOrderForm);
+            model.addAttribute("boxerror", "段ボールが200個分を超えています");
+            return "confirm";
+        }
         Integer price = estimateService.getPrice(dto);
 
         Integer distance = (int) Math.floor(estimateDAO.getDistance(dto.getOldPrefectureId(), dto.getNewPrefectureId()));
@@ -177,6 +189,16 @@ public class EstimateController {
         }
 
         return "result";
+    }
+/**
+     * 荷物当たりの段ボール数を算出する。
+     *
+     * @param packageNum 荷物数
+     * @param type       荷物の種類
+     * @return 段ボール数
+     */
+    public int getBoxForPackage(int packageNum, PackageType type) {
+        return packageNum * estimateDAO.getBoxPerPackage(type.getCode());
     }
 
     /**
