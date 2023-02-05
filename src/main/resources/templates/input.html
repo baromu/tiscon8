@@ -70,12 +70,22 @@
       </fieldset>
       <fieldset>
       <div class="sub-title">お荷物情報</div>
+      
         <div class="form-group">
           <label for="box">段ボールの個数</label>
+          <div class="attention">
+            ダンボール80個まで：3万円<br>
+            ダンボール200個まで：5万円<br>
+            ※200個までのみ対応
+          </div>  
           <input type="text" id="box" name="box" th:field="*{box}" class="form-control" value="10"/>
         </div>
+      
         <div class="form-group">
           <label for="bed">ベッドの個数</label>
+          <div class="attention">
+          ベッド1個→ダンボール20個分
+          </div>
           <input type="text" id="bed" name="bed" th:field="*{bed}" class="form-control" value="3"/>
         </div>
         <div class="form-group">
