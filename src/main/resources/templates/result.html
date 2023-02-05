@@ -30,20 +30,23 @@
           </tr>
           <tr>
             <td>距離</td>
-            <td>計算式</td>
-            <td>金額</td>
+            <td><span th:text="${distance}"></span>(km) × 100(円)</td>
+            <td><span th:text="${priceForDistance}"></span>円</td>
           </tr>
           <tr>
             <td>段ボール</td>
-            <td>計算式</td>
-            <td>金額</td>
+            <td><span th:text="${boxes}"></span>個 < <span th:text="80 >= ${boxes} ? '80個(2tトラック)' : '200個(4tトラック)'"></span></td>
+            <td><span th:text="${priceTruck}"></span>円</td>
           </tr>
           <tr>
             <td>オプション</td>
-            <td>計算式</td>
-            <td>金額</td>
+            <td><span th:text="*{washingMachineInstallation} ? 'あり' : 'なし'"></span></td>
+            <input type="hidden" name="washingMachineInstallation" id="washingMachineInstallation" th:value="*{washingMachineInstallation}"/>
+            <td><span th:text="*{washingMachineInstallation} ? '3000円' : '0円'"></span></td>
           </tr>
         </table>
+        <div>※段ボール <span th:text="${box}"></span>箱 + ベッド<span th:text="${bed}"></span>台×20 + 自転車<span th:text="${bicycle}"></span>台×15
+          + 洗濯機<span th:text="${WM}"></span>台×10 = <span th:text="${boxes}"></span>コ</div>
         </div>
         <button type="submit" name="complete" class="btn btn-primary">詳細見積もり依頼へ</button>
       </div>

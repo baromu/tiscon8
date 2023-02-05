@@ -12,6 +12,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.tiscon.code.PackageType;
+
 /**
  * 引越し見積もりのコントローラークラス。
  *
@@ -132,9 +134,48 @@ public class EstimateController {
         BeanUtils.copyProperties(userOrderForm, dto);
         Integer price = estimateService.getPrice(dto);
 
+        Integer distance = (int) Math.floor(estimateDAO.getDistance(dto.getOldPrefectureId(), dto.getNewPrefectureId()));
+        Integer priceForDistance = distance * 100;
+
+        Integer box = dto.getBox();
+        Integer bed = dto.getBed();
+        Integer bicycle = dto.getBicycle();
+        Integer WM = dto.getWashingMachine();
+
+        Integer bedBox = estimateService.getBoxForPackage(dto.getBed(), PackageType.BED); //×20
+        Integer bicycleBox = estimateService.getBoxForPackage(dto.getBicycle(), PackageType.BICYCLE); //×15
+        Integer WMBox = estimateService.getBoxForPackage(dto.getWashingMachine(), PackageType.WASHING_MACHINE); //×10
+        Integer boxes = estimateService.getBoxForPackage(dto.getBox(), PackageType.BOX) + bedBox + bicycleBox + WMBox;
+        Integer priceTruck = estimateDAO.getPricePerTruck(boxes);
+
         model.addAttribute("prefectures", estimateDAO.getAllPrefectures());
         model.addAttribute("userOrderForm", userOrderForm);
         model.addAttribute("price", price);
+
+        model.addAttribute("distance", distance);
+
+        model.addAttribute("box", box);
+        model.addAttribute("bed", bed);
+        model.addAttribute("bicycle", bicycle);
+        model.addAttribute("WM", WM);
+        model.addAttribute("boxes", boxes);
+
+        String sql = dto.getDate();
+        if (sql.equals("3") || sql.equals("4")){
+            priceForDistance = priceForDistance * 15 / 10;
+            priceTruck = priceTruck* 15 / 10;
+            model.addAttribute("priceForDistance",priceForDistance);
+            model.addAttribute("priceTruck", priceTruck);
+        }else if(sql.equals("9")){
+            priceForDistance = priceForDistance * 12 / 10;
+            priceTruck = priceTruck * 12 / 10;
+            model.addAttribute("priceForDistance",priceForDistance);
+            model.addAttribute("priceTruck", priceTruck);
+        }else{
+            model.addAttribute("priceForDistance",priceForDistance);
+            model.addAttribute("priceTruck", priceTruck);
+        }
+
         return "result";
     }
 
