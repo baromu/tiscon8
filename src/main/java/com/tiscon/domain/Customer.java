@@ -22,8 +22,8 @@ public class Customer implements Serializable {
 
     private String date;
 
-    public int getDate() {
-        return customerId;
+    public String getDate() {
+        return date;
     }
 
     public void setDate(String date) {
